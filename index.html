@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHAAN | Indian Haute Parfumerie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/ios-filled/50/D4AF37/perfume-bottle.png">
+</head>
+<body>
+
+    <div id="toast-wrapper" class="toast-hidden">
+        <div id="toast-msg-step" class="toast-step toast-msg-view">
+            <i class="fas fa-check-circle gold-text"></i>
+            <span><span id="added-perfume-name">Perfume</span> added to bag</span>
+        </div>
+        <div id="toast-view-step" class="toast-step toast-btn-view">
+            <span class="bag-preview"><i class="fas fa-shopping-bag gold-text"></i></span>
+            <button onclick="openCart()" class="mini-view-btn">VIEW BAG</button>
+            <button onclick="dismissToast()" class="mini-close-btn">&times;</button>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo" onclick="navigate('home')">SHAAN<span>PERFUME</span></div>
+        
+        <div class="mobile-menu-toggle" id="mobile-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <div class="nav-links" id="nav-links">
+            <button onclick="navigate('home')" id="btn-home" class="nav-btn active">Home</button>
+            <button onclick="navigate('shop')" id="btn-shop" class="nav-btn">Shop</button>
+            <button onclick="navigate('contact')" id="btn-contact" class="nav-btn">Contact</button>
+        </div>
+
+        <div class="cart-trigger" onclick="openCart()">
+            <i class="fas fa-shopping-bag"></i>
+            <span id="cart-count">0</span>
+        </div>
+    </nav>
+
+    <main id="spa-content">
+        <section id="view-home" class="view">
+            <div class="hero-bg"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 class="serif-text">Tradition,<br>Distilled.</h1>
+                <p>Curated Indian Attars & Modern Blends.</p>
+                <button class="cta-gold" onclick="navigate('shop')">DISCOVER COLLECTION</button>
+            </div>
+        </section>
+
+        <section id="view-shop" class="view hidden">
+            <div class="section-head">
+                <h2 class="serif-text">Our Collection</h2>
+                <div class="shop-controls">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="shop-search" placeholder="Search scents...">
+                    </div>
+                    <div class="filter-group">
+                        <select id="category-filter">
+                            <option value="all">All Categories</option>
+                            <option value="Woody">Woody & Oud</option>
+                            <option value="Floral">Floral & Rose</option>
+                            <option value="Fresh">Fresh & Aqua</option>
+                            <option value="Spicy">Spicy & Warm</option>
+                        </select>
+                        <select id="price-sort">
+                            <option value="low">Price: Low to High</option>
+                            <option value="high">Price: High to Low</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid" id="product-grid"></div>
+        </section>
+
+        <section id="view-contact" class="view hidden">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h2 class="serif-text">Get in Touch</h2>
+                    <p>Experience the art of Indian perfumery.</p>
+                    <div class="info-items">
+                        <a href="mailto:info@shaanperfume.com" class="info-item">
+                            <i class="fas fa-envelope"></i> 
+                            <span>info@shaanperfume.com</span>
+                        </a>
+                        <a href="tel:+919876543210" class="info-item">
+                            <i class="fas fa-phone"></i> 
+                            <span>+91 98765 43210</span>
+                        </a>
+                        <a href="https://wa.me/919876543210" class="info-item">
+                            <i class="fab fa-whatsapp"></i> 
+                            <span>Chat on WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <h3 class="serif-text">Follow Our Journey</h3>
+                    <div class="social-links">
+                        <a href="https://instagram.com/shaanperfume" target="_blank" class="social-icon instagram">
+                            <i class="fab fa-instagram"></i> INSTAGRAM
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="cart-overlay" class="cart-overlay" onclick="closeCart(event)">
+        <div class="cart-sidebar" onclick="event.stopPropagation()">
+            <div class="cart-head">
+                <h3 class="serif-text">YOUR BAG</h3>
+                <button class="close-x" onclick="toggleCartDisplay()">&times;</button>
+            </div>
+            
+            <div id="cart-list" class="cart-body"></div>
+            
+            <div class="cart-foot">
+                <div class="total-row">
+                    <span>Subtotal</span>
+                    <span id="cart-total">₹0</span>
+                </div>
+                <button class="checkout-btn" onclick="openCheckout()">PROCEED TO CHECKOUT</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="checkout-overlay" class="checkout-overlay hidden">
+        <div class="checkout-modal">
+            <div class="checkout-head">
+                <h2 class="serif-text">Checkout Details</h2>
+                <button class="close-x" onclick="closeCheckout()">&times;</button>
+            </div>
+            
+            <form class="checkout-form" onsubmit="finalizeOrder(event)">
+                <div class="form-section">
+                    <h3>1. Delivery Address</h3>
+                    <div class="input-group">
+                        <input type="text" id="cust-name" required placeholder=" ">
+                        <label>Full Name</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="cust-phone" required placeholder=" ">
+                        <label>Contact Number (Indian Mobile)</label>
+                    </div>
+                    <div class="input-group">
+                        <textarea id="cust-address" rows="3" required placeholder=" "></textarea>
+                        <label>Full Shipping Address (with Pincode)</label>
+                    </div>
+                </div>
+
+                <div class="form-section payment-section">
+                    <h3>2. Payment Method</h3>
+                    <div class="payment-options">
+                        <label class="pay-option">
+                            <input type="radio" name="pay_method" value="UPI" required>
+                            <span class="pay-box"><i class="fas fa-mobile-alt"></i> UPI Transfer</span>
+                        </label>
+                        <label class="pay-option">
+                            <input type="radio" name="pay_method" value="COD">
+                            <span class="pay-box"><i class="fas fa-truck-loading"></i> Cash on Delivery (+₹100)</span>
+                        </label>
+                        <label class="pay-option">
+                            <input type="radio" name="pay_method" value="LINK">
+                            <span class="pay-box"><i class="fas fa-link"></i> Payment Link</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="checkout-footer">
+                    <p>Order Summary: <span id="checkout-sum-total" class="gold-text">₹0</span></p>
+                    <button type="submit" class="place-order-btn cta-gold" style="width: 100%;">
+                        PLACE ORDER ON WHATSAPP <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
